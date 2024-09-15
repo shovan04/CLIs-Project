@@ -77,7 +77,7 @@ void CreateAllFiles(const string &directoryName)
   "name": ")" + directoryName +
                          R"(",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node dist/index.js",
@@ -112,55 +112,56 @@ void CreateAllFiles(const string &directoryName)
     // Create `tsconfig.json` file
     string tsConfigJson = R"({
     "compilerOptions": {
-      "rootDirs": ["src"],
-      "outDir": "dist",
-      "lib": ["es2020"],
-      "target": "es2020",
-      "module": "Node16",
-      "moduleResolution": "Node16",
-      "esModuleInterop": true,
-      "types": ["node"]
+        "rootDir": "src",             
+        "outDir": "dist",             
+        "lib": ["es2020"],            
+        "target": "es2020",           
+        "module": "Node16",           
+        "moduleResolution": "Node16", 
+        "esModuleInterop": true,      
+        "types": ["node"],            
+        "strict": true                
     },
-    "include": ["src"]
+    "include": ["src"]              
 })";
 
     CreateAndInsertDataToFile((directoryName + "/tsconfig.json").c_str(), tsConfigJson);
 
-    string indexTs = R"(import express, { Application, Request, Response } from "express";
-import "dotenv/config";
-import cors from "cors";
-const app: Application = express();
-const PORT = process.env.PORT || 7000;
+    string indexTs = R"(
+    import express, { Application, Request, Response } from "express";
+    import "dotenv/config";
+    import cors from "cors";
+    const app: Application = express();
+    const PORT = process.env.PORT || 7000;
 
-// * Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+    // * Middleware
+    app.use(cors());
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello from TypeScript Express App!");
-});
+    app.get("/", (req: Request, res: Response) => {
+        res.send('Hello from TypeScript Express App!');
+    });
 
-app.listen(PORT, () =>
-  console.log(`Server is running. Visit http://localhost:${PORT}`)
-);)";
+    app.listen(PORT, () => console.log(`Server is running. Visit http://localhost:${PORT}`));
+    )";
 
     CreateAndInsertDataToFile((directoryName + "/src/index.ts").c_str(), indexTs);
 
-    cout << "\nSuccess! Now run:" << endl;
-    cout << "\tcd " << directoryName << endl;
-    cout << "\tyarn (or 'npm i' if you use npm)\n"
-         << endl;
-    cout << "Now you can start developing your TypeScript Express app by running 'yarn dev' (or 'npm run dev' if you use npm) and edit the /src/index.ts file for changes.\n"
-         << endl;
+    cout << "\n\n\nSuccess! Now:" << endl;
+    cout << "\tcd" << directoryName << endl;
+    cout << "\tyarn (or 'npm i' if you use npm)" << endl;
+    cout << "Now you can start developing your TypeScript Express app by running 'yarn dev' (or 'npm run dev' if you use npm) and edit the /src/app.ts file for changes." << endl;
 }
+
+
+
 
 int main(int argc, char *argv[])
 {
     if (argc < 2)
     {
-        cerr << "Usage: expressTs <command>" << endl
-             << "Use:\n    1. expressTs init\n    2. expressTs -y";
+        cerr << "Usage: expressTs <command>" << endl << "Use:\n    1. expressTs init\n    2. expressTs -y";
         return 1;
     }
 
@@ -176,7 +177,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        cerr << "Invalid command! Use:\n    1. expressTs init\n    2. expressTs -y" << endl;
+        cerr << "Invalid command! Use 'expressTs init' or 'expressTs -y'" << endl;
     }
 
     return 0;
